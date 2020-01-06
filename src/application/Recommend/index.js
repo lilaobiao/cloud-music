@@ -12,14 +12,19 @@ import Loading from '../../baseUI/loading-v2/index';
 
 // Function Component 不存在生命周期，所以不要把 Class Component 的生命周期概念搬过来试图对号入座。
 // Function Component 仅描述 UI 状态，React 会将其同步到 DOM，仅此而已。
+
+// 这个地方最好可以用react-redux的hooks来实现，毕竟全面拥抱了hooks了。而且代码量也能减少不了，不污染props。
+// 性能应该也更好一点。useSelector useDispatch
 function Recommend(props){
-  // 获取props里的相关属性，而props对象的所有数据又是来自state
+  // 获取 props里的相关属性，而props对象的所有数据又是来自state
   const { bannerList, recommendList, songsCount, enterLoading } = props;
 
   const { getBannerDataDispatch, getRecommendListDataDispatch } = props;
 
   // 获取数据
   useEffect(() => {
+    // 如果页面有数据，则不发请求
+    //immutable 数据结构中长度属性 size
     if(!bannerList.size){
       getBannerDataDispatch();
     }
@@ -60,7 +65,7 @@ const mapStateToProps = (state) => ({
 const mapDispatchToProps = (dispatch) => {
   return {
     getBannerDataDispatch() {
-      // 页面获取数据，就是触发获取数据的action，该action会拿到数据，放到store里面，至此，页面上便有了数据
+      // 页面获取数据，就是触发获取数据的 action，该 action 会拿到数据，放到 store 里面，至此，页面上便有了数据
       dispatch(actionTypes.getBannerList());
     },
     getRecommendListDataDispatch() {

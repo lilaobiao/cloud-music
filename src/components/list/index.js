@@ -1,5 +1,5 @@
 import React from 'react';
-import { 
+import {
   ListWrapper,
   ListItem,
   List
@@ -21,6 +21,7 @@ function RecommendList(props) {
               <ListItem key={item.id} onClick={() => enterDetail(item.id)}>
                 <div className="img_wrapper">
                   <div className="decorate"></div>
+                  {/*首屏图片懒加载*/}
                   <LazyLoad placeholder={<img width="100%" height="100%" src={require('./music.png')} alt="music"/>}>
                     <img src={item.picUrl + "?param=300x300"} width="100%" height="100%" alt="music"/>
                   </LazyLoad>
@@ -38,5 +39,5 @@ function RecommendList(props) {
     </ListWrapper>
   );
   }
- 
+
 export default withRouter(React.memo(RecommendList));

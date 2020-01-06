@@ -1,5 +1,6 @@
 import * as actionTypes from './constants';
 import { fromJS } from 'immutable';
+
 // 每个模块创建自己的reducer
 const defaultState = fromJS({
   bannerList: [],
@@ -7,6 +8,8 @@ const defaultState = fromJS({
   enterLoading: true
 })
 
+// 由于存放的是 immutable 数据结构，
+// 所以必须用 set 方法来设置新状态，同时取状态用 get 方法。
 export default (state = defaultState, action) => {
   switch(action.type) {
     case actionTypes.CHANGE_BANNER:

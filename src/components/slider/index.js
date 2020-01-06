@@ -23,6 +23,7 @@ function Slider(props) {
   }, [bannerList.length, sliderSwiper])
   return (
     <SliderContainer>
+      {/*slider的背景层*/}
       <div className="before"></div>
       <div className="slider-container">
         <div className="swiper-wrapper">
@@ -39,7 +40,7 @@ function Slider(props) {
           }
         </div>
         <div className="swiper-pagination"></div>
-      </div> 
+      </div>
     </SliderContainer>
   );
 }

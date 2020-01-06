@@ -130,7 +130,7 @@ const Scroll = forwardRef((props, ref) => {
   useEffect(() => {
     if(!bScroll || !pullUp) return;
     bScroll.on('scrollEnd', () => {
-      //判断是否滑动到了底部
+      // 判断是否滑动到了底部
       if(bScroll.y <= bScroll.maxScrollY + 100){
         pullUpDebounce();
       }
@@ -144,7 +144,7 @@ const Scroll = forwardRef((props, ref) => {
   useEffect(() => {
     if(!bScroll || !pullDown) return;
     bScroll.on('touchEnd', (pos) => {
-      //判断用户的下拉动作
+      // 判断用户的下拉动作
       if(pos.y > 50) {
         pullDownDebounce();
       }
@@ -154,7 +154,8 @@ const Scroll = forwardRef((props, ref) => {
     }
   }, [pullDown, pullDownDebounce, bScroll]);
 
-   // 绑定refresh方法
+  // 绑定refresh方法，
+  // 每次重新渲染都要刷新实例，防止无法滑动:
   useEffect(() => {
     if(refresh && bScroll){
       bScroll.refresh();
@@ -162,14 +163,17 @@ const Scroll = forwardRef((props, ref) => {
   });
 
   // useImperativeHandle 可以让你在使用 ref 时自定义暴露给父组件的实例值，
+  // 一般和 forwardRef 一起使用，ref 已经在 forWardRef 中默认传入
   // 说简单点就是，子组件可以选择性的暴露给父组件一些方法
   useImperativeHandle(ref, () => ({
+    // 给外界暴露 refresh 方法
     refresh() {
       if(bScroll) {
         bScroll.refresh();
         bScroll.scrollTo(0, 0);
       }
     },
+    // 给外界暴露 getBScroll 方法，提供 bs 实例
     getBScroll() {
       if(bScroll) {
         return bScroll;

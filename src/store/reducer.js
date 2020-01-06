@@ -12,6 +12,7 @@ import { reducer as userReducer } from "../application/User/Login/store/index";
 // 然后就可以对这个 reducer 调用 createStore。
 // https://blog.csdn.net/woshizisezise/article/details/51142968
 
+// 引入所有的 reducer 并注册，全局 store 注册
 export default combineReducers({
   recommend: recommendReducer,
   singers: singersReducer,

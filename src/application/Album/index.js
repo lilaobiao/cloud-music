@@ -26,14 +26,26 @@ function Album(props) {
 
   const { currentAlbum, enterLoading, pullUpLoading, songsCount } = props;
   const { getAlbumDataDispatch, changePullUpLoadingStateDispatch } = props;
-  
+
   let currentAlbumJS = currentAlbum.toJS();
 
   useEffect(() => {
     getAlbumDataDispatch(id);
   }, [getAlbumDataDispatch, id]);
 
+  const handlePullUp = () => {
+    changePullUpLoadingStateDispatch(true);
+    changePullUpLoadingStateDispatch(false);
+  };
 
+  /**
+   * 将传给子组件的函数用 useCallback 包裹，这也是 useCallback 的常用场景。
+   * 以此为例，如果不用 useCallback 包裹，父组件每次执行时会生成
+   * 不一样的 handleBack 和 handleScroll 函数引用，那么子组件每一次 memo
+   * 的结果都会不一样，导致不必要的重新渲染，也就浪费了 memo 的价值。
+   *
+   * 因此 useCallback 能够帮我们在依赖不变的情况保持一样的函数引用，最大程度地节约浏览器渲染性能。
+   */
   const handleScroll = useCallback((pos) => {
     let minScrollY = -HEADER_HEIGHT;
     let percent = Math.abs(pos.y/minScrollY);
@@ -51,11 +63,6 @@ function Album(props) {
     }
   }, [currentAlbumJS]);
 
-  const handlePullUp = () => {
-    changePullUpLoadingStateDispatch(true);
-    changePullUpLoadingStateDispatch(false);
-  };
-  
   const handleBack = useCallback(() => {
     setShowStatus(false);
   }, []);
@@ -65,11 +72,11 @@ function Album(props) {
   }
 
   return (
-      <CSSTransition 
-        in={showStatus}  
-        timeout={300} 
-        classNames="fly" 
-        appear={true} 
+      <CSSTransition
+        in={showStatus}
+        timeout={300}
+        classNames="fly"
+        appear={true}
         unmountOnExit
         onExited={props.history.goBack}
       >
@@ -77,9 +84,9 @@ function Album(props) {
           <Header ref={headerEl} title={title} handleClick={handleBack} isMarquee={isMarquee}></Header>
           {
             !isEmptyObject(currentAlbumJS) ? (
-              <Scroll 
-                onScroll={handleScroll} 
-                pullUp={handlePullUp} 
+              <Scroll
+                onScroll={handleScroll}
+                pullUp={handlePullUp}
                 pullUpLoading={pullUpLoading}
                 bounceTop={false}
               >
